@@ -4,9 +4,9 @@
 //so we have to use filter instead
 const coding = ["javascript", "python", "java", "c++", "ruby"];
 
-//const values = coding.forEach((item) => console.log(item))//this will print all the items inthe array
+const values = coding.forEach((item) => console.log(item))//this will print all the items inthe array
                              // but it will return undefined because forEach does not return anything
-//console.log(values);
+console.log(values);
 // so we have to use filter instead of forEach 
 
 const val = [1,2,3,4,5,6,7,8,9,10];
@@ -15,20 +15,20 @@ const val = [1,2,3,4,5,6,7,8,9,10];
 //  returning anything from that scope so it is returning undefined and filter is expecting a 
 // boolean value to decide whether to include the item in the new array or not,
 //  but we are not returning anything so it is returning undefined
-// const newnum1 = val.filter((item) => {item >= 4});
-// console.log(newnum1);
+ const newnum1 = val.filter((item) => {item >= 4});
+ console.log(newnum1);
 
 //this will give usthe correct result because weare returning the boolean value from arrow function
-// const newnum = val.filter((item) => {return item >= 4});
-// console.log(newnum);
+ const newnum = val.filter((item) => {return item >= 4});
+ console.log(newnum);
 
 // we can also do the same thing with foreach loop
 //example
-// const newnum2 = val.forEach((item) => {
-//     if(item >= 4){
-//         console.log(item); 
-//     }
-// })
+ const newnum2 = val.forEach((item) => {
+   if(item >= 4){
+        console.log(item); 
+    }
+ })
 
 //ok i have a realworld example of filter 
 const books = [
@@ -78,11 +78,11 @@ console.log(wantbook2);
 //basic example
 const num = [1,2,3,4,5];
 const sum = num.reduce((acc ,curr) => {
-   // console.log(acc); //at start acc is 0 because we have provided 0 as initial as it itrates acc
+    console.log(acc); //at start acc is 0 because we have provided 0 as initial as it itrates acc
                       // will be updated with the recent return value   
     return acc + curr;
 } , 0);
-//console.log(sum);
+console.log(sum);
 
 //realworld usecases of reduce 
 const cart = [
