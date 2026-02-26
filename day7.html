@@ -41,11 +41,17 @@
     div.innerHTML = 'friday';
     div.className = 'jschild';
     div.setAttribute('title', 'friday');
-    
 
+    // create element in optamized way
+    const div2 = document.createElement('div')
+    div2.appendChild(document.createTextNode('saturday'))
+    document.querySelector('.parent').appendChild(div2)
 
-        
-
-
+    // edit element    
+    const context = document.querySelector('.parent').children[4];
+   // document.write(context.innerHTML);
+    const newele2 = document.createElement('div');
+    newele2.appendChild(document.createTextNode('weekend'))
+    context.replaceWith(newele2)
 </script>
 </html>
