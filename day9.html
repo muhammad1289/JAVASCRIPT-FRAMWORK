@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #212121; color: white; text-align: center;">
+    <h1>NUMBER GUESSING GAME</h1>
+    <h3>Guess the number between 1 and 100 in 10 attempts!</h3>
+    <br>
+    <input type="number" name="guess" id="inpt" placeholder="Enter your guess here" 
+                             style="padding: 10px; width: 200px; font-size: 16px;">
+    <br>
+    <br><button  id="btn">Submit</button><br>
+    <br><label for="prevges">Previous Guesses:</label>
+    <div  id="prevges" style="margin-top: 10px;"></div>
+    <br><label for="gesremain">Guesses Remaining: <span id="remaining">10</span></label>
+    <div id="result"></div>
+</body>
+<script>
+let randomnum = Math.floor(Math.random() * 101)
+//function checkGuess(){
+    let btn = document.getElementById('btn')
+    let arr = [];
+    let count = 10
+     
+    //for(var i = 0 ; i < 10 ; i++){
+        btn.addEventListener('click' , () => {
+            const resdiv = document.getElementById('result')
+            if(count <= 0){
+                resdiv.innerHTML = 'gamover'
+                return
+            }
+            let gusval = document.querySelector('#inpt').value
+            arr.push(gusval);
+           
+            if(gusval == randomnum){
+                resdiv.innerHTML = 'Your this quessed value is correct' 
+            }else{
+                resdiv.innerHTML = 'No next timerandomnum' 
+                console.log(randomnum)
+            }
+            const arrdiv = document.querySelector('#prevges')
+            arrdiv.innerHTML = arr.join(',');
+
+            const remain = document.getElementById('remaining')
+            
+            count--
+            remain.innerHTML = count
+        })
+
+    
+
+
+
+</script>
+</html>
