@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #414141; color: aliceblue;">
+    <h2>Amazing image</h2>
+    <div >
+        <ul id="images">
+            <li><img width="200px" id="photoshop" src="https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="photoshop"></li>
+            <li><img width="200px" id="japan" src="https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="river" src="https://images.pexels.com/photos/3532551/pexels-photo-3532551.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="owl" onclick="alert('hye you')" src="https://images.pexels.com/photos/3532552/pexels-photo-3532552.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="" ></li>
+            <li><img width="200px" id="prayer" src="https://images.pexels.com/photos/2522671/pexels-photo-2522671.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><a style="color: aliceblue;" href="https://google.com" id="google">Google</a></li>
+        </ul>
+   </div>
+</body>
+<script>
+    // javascript is a sequentially run language (type of program that executes a series of instructions 
+    //                                            in a specific order, processing data step by step)
+    // day 10 'EVENTS IN JAVASCRIPT'
+    // First of all we understand ways to use click event so first one is the basic one is on the tag of html 
+    // which i used in owl tag but there 2 more methods
+    document.getElementById('river').onclick = //alert('hye bro its ramadan kareem bro')//when javascrpt loads onclick
+    //  runs imediatlly so we have to give the function so it loads the function and then when i click then 
+    // function will execute like given below
+    document.getElementById('river').onclick = () => {
+        //alert('hye bro its ramadan kareem bro')
+    }
+    //now best way (modren way)
+    document.getElementById('prayer').addEventListener('click',() => {
+        //alert('hye')
+    })
+
+    // EVENT OBJECT 
+     document.getElementById('prayer').addEventListener('click',(e) => {
+        //console.log(e.relatedTarget);
+
+    })
+//When an event happens (click, submit, keypress, etc.),
+//JavaScript automatically creates an object containing information about that event.
+
+//That object is passed into your function as a parameter.
+//When you console.log(e), you’ll see a big object containing all the properties of that event.
+
+// There is some of important proprties which we'll use in future and imp for interviews
+//1. e.target => The element that was actually clicked.
+//2. e.currentTarget => The element that the event listener is attached to.
+//3. e.preventDefault() => Stops default browser behavior.
+//4. e.stopPropagation() => Stops event bubbling.
+//5. e.srcElement => old version of target 
+//6. e.toElement => The element the mouse is moving to modren version of this is "relatedtarget"
+                    // example : If your mouse moves from DIV A → DIV B
+                     //fromElement → A
+                     //toElement → B
+
+//diff b/w event.target and event.currentTarget
+//target → actual element clicked
+//currentTarget → element listener is attached to
+
+
+// EVENT PROPAGATION // There is 2 context of this EVENT PROPAGATION event bubling(mostly used), event capturing 
+
+ //document.getElementById('images').addEventListener('click',(e) => {
+        //console.log('images clicked');
+ //   } , false)  // false is the default
+
+ //document.getElementById('prayer').addEventListener('click',(e) => {
+        // console.log('prayer clicked');
+        //e.stopPropagation()  // to stop any type of propagation
+    // }, false)// if here is false then they both follow bubbling up property(first it prints inside child(prayer)
+                                                                              //div and then parent div (images))
+
+// document.getElementById('images').addEventListener('click',(e) => {
+//         console.log('images clicked');
+//     } , true) 
+
+// document.getElementById('prayer').addEventListener('click',(e) => {
+//         console.log('prayer clicked');
+//     }, true)
+
+document.querySelector('#images').addEventListener('click' , function(e){
+    console.log( e.target)
+    const removeit = e.target.parentNode;
+    if(e.target.tagName === 'IMG'){     // This will remove the img when clicked onit not ul or li 
+        removeit.remove();  
+    }
+   
+}, false)
+
+
+
+</script>
+</html>
