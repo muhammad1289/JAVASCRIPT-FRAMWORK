@@ -68,15 +68,15 @@
         console.log('images clicked');
     } , false)  // false is the default
 
- document.getElementById('prayer').addEventListener('click',(e) => {
-         console.log('prayer clicked');
-         e.stopPropagation()  // to stop any type of propagation
-     }, false)// if here is false then they both follow bubbling up property(first it prints inside child(prayer)
+ //document.getElementById('prayer').addEventListener('click',(e) => {
+        // console.log('prayer clicked');
+        //e.stopPropagation()  // to stop any type of propagation
+    // }, false)// if here is false then they both follow bubbling up property(first it prints inside child(prayer)
                                                                               //div and then parent div (images))
 
- document.getElementById('images').addEventListener('click',(e) => {
-        console.log('images clicked');
-     } , true) 
+// document.getElementById('images').addEventListener('click',(e) => {
+//         console.log('images clicked');
+//     } , true) 
 
  document.getElementById('prayer').addEventListener('click',(e) => {
          console.log('prayer clicked');
