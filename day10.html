@@ -24,20 +24,20 @@
     // day 10 'EVENTS IN JAVASCRIPT'
     // First of all we understand ways to use click event so first one is the basic one is on the tag of html 
     // which i used in owl tag but there 2 more methods
-    document.getElementById('river').onclick = //alert('hye bro its ramadan kareem bro')//when javascrpt loads onclick
+    document.getElementById('river').onclick = alert('hye bro its ramadan kareem bro')//when javascrpt loads onclick
     //  runs imediatlly so we have to give the function so it loads the function and then when i click then 
     // function will execute like given below
     document.getElementById('river').onclick = () => {
-        //alert('hye bro its ramadan kareem bro')
+        alert('hye bro its ramadan kareem bro')
     }
     //now best way (modren way)
     document.getElementById('prayer').addEventListener('click',() => {
-        //alert('hye')
+        alert('hye')
     })
 
     // EVENT OBJECT 
      document.getElementById('prayer').addEventListener('click',(e) => {
-        //console.log(e.relatedTarget);
+        console.log(e.relatedTarget);
 
     })
 //When an event happens (click, submit, keypress, etc.),
@@ -64,23 +64,23 @@
 
 // EVENT PROPAGATION // There is 2 context of this EVENT PROPAGATION event bubling(mostly used), event capturing 
 
- //document.getElementById('images').addEventListener('click',(e) => {
-        //console.log('images clicked');
- //   } , false)  // false is the default
+ document.getElementById('images').addEventListener('click',(e) => {
+        console.log('images clicked');
+    } , false)  // false is the default
 
- //document.getElementById('prayer').addEventListener('click',(e) => {
-        // console.log('prayer clicked');
-        //e.stopPropagation()  // to stop any type of propagation
-    // }, false)// if here is false then they both follow bubbling up property(first it prints inside child(prayer)
+ document.getElementById('prayer').addEventListener('click',(e) => {
+         console.log('prayer clicked');
+         e.stopPropagation()  // to stop any type of propagation
+     }, false)// if here is false then they both follow bubbling up property(first it prints inside child(prayer)
                                                                               //div and then parent div (images))
 
-// document.getElementById('images').addEventListener('click',(e) => {
-//         console.log('images clicked');
-//     } , true) 
+ document.getElementById('images').addEventListener('click',(e) => {
+        console.log('images clicked');
+     } , true) 
 
-// document.getElementById('prayer').addEventListener('click',(e) => {
-//         console.log('prayer clicked');
-//     }, true)
+ document.getElementById('prayer').addEventListener('click',(e) => {
+         console.log('prayer clicked');
+     }, true)
 
 document.querySelector('#images').addEventListener('click' , function(e){
     console.log( e.target)

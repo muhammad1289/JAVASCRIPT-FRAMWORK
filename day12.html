@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lorem ipsum dolor sit, amet consectetur adipisicing.</h1>
+    <button class= "start">start</button>
+    <button class="stop">stop</button>
+</body>
+<script>
+     // +++++++++++++++++++++++++change colour of body every second++++++++++++++++++++++++++
+
+     // CREATE RANDOM COLOUR
+     const hex = '0123456789ABCDEF'
+     let colour = '#'
+
+     for(let i = 0 ; i <= 5 ; i++){
+        colour += hex[Math.floor(Math.random() * 16)]
+     }
+     console.log(colour);
+     
+
+
+    const outtime = function(){
+        console.log("5 sec");
+        
+    };
+
+    const saydate = function(){
+        console.log(Date.now() , 'hi');
+    };
+    
+    // const starttime = setTimeout(outtime , 5000);
+    let timmer;
+
+    const btn1 = document.querySelector(".start");
+    const btn2 = document.querySelector(".stop");
+
+    btn1.addEventListener('click', () => {
+         timmer =  setInterval(saydate , 3000);
+    })
+
+    btn2.addEventListener('click' , () => {
+        clearInterval(timmer)
+        console.log('stopped');  
+    })
+
+</script>
+</html>
