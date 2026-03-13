@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const  data = 'https://api.github.com/users/muhammad1289'
+    const superman = new XMLHttpRequest();
+    superman.open('GET', data)    // to request the api
+
+    superman.onreadystatechange = function(){  
+        console.log(superman.readyState);        // to track the stages of api response like 0 , 1 , 2 , 3 ,4
+        if (superman.readyState === 4) {   
+            const data =  JSON.parse(this.response)
+            console.log(data)        // this.response have the whole data comming from api 
+          // SO we get data from reponse in a foam of string so we change it by json.parse into obj
+            // so why we converted it into obj cause we cant get the values from strings like below
+        console.log(data.following);
+        }
+    }
+    
+    superman.send() //this actually send the request
+</script>
+</html>
