@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     
+    <h1>Lorem ipsum dolor sit amet.</h1>
+</body>
+<script>
+//PROMISES(we can do 2 type of things with promises 1. to create it , 2. to consume it mostly we'll 
+// consume it like given bellow)
+fetch('https://something.com').then().catch().finally();//fetch = to access web request,then = to get or store
+//  that response , catch = if there is any error catch will carry that , finally = this will always run
+//  anything else didn't run   (THIS IS HOW WE CONSUME THE PROMISES)
+
+// But first we'll understand how to create PROMISES....
+// promise is an (OBJECT) and there is diff ways to create promises
+const promise1 = new Promise((resolve, reject) => {  // promise has a function containing 2 parts resolve and reject 
+    //this perfoam async task
+    //DB calls , cryptography ,network
+    setTimeout(function(){
+        console.log('async task is completed ');
+        resolve();
+    }, 2000)
+})                         // NOW PROMISE IS CREATED BELLOW WE'LL COMSUME IT THROUGH THEN
+     // then() is directly connected to resolve 
+promise1.then(function(){ // inside then we always get the callback from the created promise(task performed in that promise)
+    console.log("promise consumed");
+    
+}) 
+
+const promise2 = new Promise((resolve, reject) => {
+    console.log("promise 2 ");
+    
+    resolve({name : "ahmed" , aga : '21'});
+}).then(function (user) {
+    console.log(user);
+    
+})
+
+const promise3 = new Promise((resolve, reject) => {
+    console.log("promise 3");
+})
+
+
+const promise4 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        const error = true;
+        if (error == false) {
+            resolve({name : 'ahmed' , age : 21})
+        }else{
+            reject("ERORR , something went wrong ");
+        }
+    } , 2000)
+})
+
+promise4.then((user) => {console.log(user.name);}).catch((err) => {console.log(err);}).finally(()=>{console.log("this will always run");})   
+// here we can do promise4.then().catch() to get values 
+// from resolve and reject but if i wanna get just name value from resolve there is the way to do that
+//  and this also prevent us from CALLBACK HELL that we do CHAINING PROMISES
+promise4
+.then((user) => {
+    return user.name;
+}).then((username)=>{
+    console.log(username);
+}).catch((err)=>{
+    console.log(err);
+}).finally(()=>{
+    console.log("this will always run");
+})
+// +++++++++++++++++++++++++++ IMPORTANT +++++++++++++++++++++++++++++++
+
+// PRACTICAL EXAMPLE of chaining promises where we cant do next task until we get the result of first task using fetch()
+const user = fetch('https://jsonplaceholder.typicode.com/users/1')   // it return a PROMISE
+.then((Response) => { return Response.json() })
+.then((data) => { console.log(data)})
+.catch((errr) =>  console.log(errr) )
+
+</script>
+</html>
