@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chatbot UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:       #5b5fc7;
+      --primary-dark:  #4a4eb8;
+      --primary-light: #7b7fd4;
+      --bubble-bot:    #f0f0f8;
+      --bubble-user:   #5b5fc7;
+      --text-dark:     #1a1a2e;
+      --text-light:    #9090b0;
+      --white:         #ffffff;
+      --input-bg:      #f7f7fc;
+      --border:        #e8e8f4;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #c8cdf0 0%, #d8dbf5 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── CHAT WIDGET ───────────────────────── */
+    .chat-widget {
+      width: 360px;
+      height: 540px;
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(60,60,160,0.18), 0 4px 16px rgba(60,60,160,0.10);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── HEADER ────────────────────────────── */
+    .chat-header {
+      background: var(--primary);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bot-avatar {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+
+    .header-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .header-btn {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── MESSAGES BODY ─────────────────────── */
+    .chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--white);
+    }
+
+    .attachment {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 6px;
+      display: block;
+      margin-left: auto; /* pushes to right since it's user bubble */
+    } 
+
+    .chat-body::-webkit-scrollbar { width: 3px; }
+    .chat-body::-webkit-scrollbar-thumb { background: #ddddf0; border-radius: 4px; }
+
+    /* ── MESSAGE ROWS ──────────────────────── */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .msg-row.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 28px; height: 28px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .msg-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-width: 72%;
+    }
+
+    .msg-row.user .msg-group { align-items: flex-end; }
+
+    /* ── BUBBLES ───────────────────────────── */
+    .bubble {
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .bubble.bot {
+      background: var(--bubble-bot);
+      color: var(--text-dark);
+      border-bottom-left-radius: 4px;
+    }
+
+    .bubble.user {
+      background: var(--bubble-user);
+      color: var(--white);
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-time {
+      font-size: 10px;
+      color: var(--text-light);
+      padding: 0 2px;
+    }
+
+    /* ── TYPING INDICATOR ──────────────────── */
+    .typing-row {
+      display: none;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .typing-dots {
+      background: var(--bubble-bot);
+      padding: 5px 7px;
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .typing-dots span {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      animation: bounce 1.3s infinite ease-in-out;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: .18s; }
+    .typing-dots span:nth-child(3) { animation-delay: .36s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0);    opacity: 0.5; }
+      30%            { transform: translateY(-6px); opacity: 1;   }
+    }
+
+    /* ── INPUT FOOTER ──────────────────────── */
+    .chat-footer {
+      position: relative;
+      padding: 12px 12px;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .preview-wrap {
+    position: relative;
+    display: inline-block;
+    margin: 8px 14px;
+}
+
+#img-preview {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid var(--primary);
+    display: block;
+}
+
+#remove-img {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 7px 8px 7px 16px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      color: var(--text-dark);
+    }
+    .chat-input::placeholder { color: var(--text-light); }
+
+    .input-icons {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .icon-btn {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: none;
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 16px;
+    }
+
+    .send-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(91,95,199,0.4);
+      flex-shrink: 0;
+    }
+
+    /* ── FLOATING TOGGLE ───────────────────── */
+    .toggle-btn {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(91,95,199,0.45);
+      font-size: 22px;
+      color: white;
+    }
+
+    em-emoji-picker{
+      position: absolute;
+      display: none;
+      left: 15%;
+      width: 100%;
+      top: -337px;
+      max-width: 350px;
+      max-height: 330px;
+      transform: translate(-50px);
+    }
+
+    body.show-emoji-picker em-emoji-picker{
+      display: flex;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+  <!-- Chat Widget -->
+  <div class="chat-widget">
+
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="header-left">
+        <div class="bot-avatar">🤖</div>
+        <span class="header-title">Chatbot</span>
+      </div>
+      <button class="header-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-body">
+
+      <!-- Bot greeting -->
+      <!-- <div class="msg-row bot">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-group">
+          <div class="bubble bot">Hey there 👋<br>How can I help you today?</div>
+          <span class="msg-time">9:00 AM</span>
+        </div>
+      </div> -->
+
+      <!-- User message -->
+      <!-- <div class="msg-row user">
+        <div class="msg-group">
+          <div class="bubble user">Hi! I need some help with my order.</div>
+          <span class="msg-time">9:01 AM</span>
+        </div>
+      </div> -->
+
+      <!-- Bot reply -->
+      <!-- <div class="msg-row bot">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-group">
+          <div class="bubble bot">Sure! Please share your order ID and I'll look into it right away.</div>
+          <span class="msg-time">9:01 AM</span>
+        </div>
+      </div> -->
+
+      <!-- User message -->
+      <!-- <div class="msg-row user">
+        <div class="msg-group">
+          <div class="bubble user">My order ID is #84920.</div>
+          <span class="msg-time">9:02 AM</span>
+        </div>
+      </div> -->
+
+      <!-- Typing indicator -->
+      <!-- <div class="typing-row">
+        <div class="msg-avatar">🤖</div>
+        <div class="typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div> -->
+
+    </div>
+
+    <!-- Input -->
+    <div class="chat-footer">
+      <div class="preview-wrap"  id="preview-wrap" style="display: none;">
+        <img src="" id="img-preview" alt="preview">
+        <button id="remove-img">X</button>
+      </div>
+
+      <div class="input-row">
+        <input class="chat-input" type="text" placeholder="Message..."/>
+        <div class="input-icons">
+          <button class="icon-btn" id="emoji-btn">☺</button>
+          <button class="icon-btn" id="file-upload">
+            <input type="file" accept="images/*" id="file-input" hidden/>
+
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.41 17.41a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+            </svg>
+          </button>
+          <button class="send-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating Toggle Button -->
+  <button class="toggle-btn">✕</button>
+
+</body>
+ <!-- linking emoji mart script for emoji picker -->
+<script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+
+<script src="day16.js"></script>
+</html>
